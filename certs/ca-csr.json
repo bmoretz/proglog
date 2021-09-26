@@ -1,0 +1,16 @@
+{
+    "CN": "Ionic Solutions: CA",
+    "key": {
+        "algo": "rsa",
+        "size": 2048
+    },
+    "names": [
+        {
+            "C": "USA",
+            "L": "NY",
+            "ST": "New York",
+            "O": "Ionic Solutions",
+            "OU": "CA Services"
+        }
+    ]
+}
