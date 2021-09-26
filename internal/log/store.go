@@ -38,6 +38,7 @@ func newStore(f *os.File) (*store, error) {
 func (s *store) Append(p []byte) (n uint64, pos uint64, err error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+
 	pos = s.size
 	if err := binary.Write(s.buf, enc, uint64(len(p))); err != nil {
 		return 0, 0, err
@@ -54,6 +55,7 @@ func (s *store) Append(p []byte) (n uint64, pos uint64, err error) {
 func (s *store) Read(pos uint64) ([]byte, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+
 	if err := s.buf.Flush(); err != nil {
 		return nil, err
 	}
@@ -71,6 +73,7 @@ func (s *store) Read(pos uint64) ([]byte, error) {
 func (s *store) ReadAt(p []byte, off int64) (int, error) {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+
 	if err := s.buf.Flush(); err != nil {
 		return 0, err
 	}
@@ -80,6 +83,7 @@ func (s *store) ReadAt(p []byte, off int64) (int, error) {
 func (s *store) Close() error {
 	s.mu.Lock()
 	defer s.mu.Unlock()
+
 	err := s.buf.Flush()
 	if err != nil {
 		return err
