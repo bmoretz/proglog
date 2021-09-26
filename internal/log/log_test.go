@@ -27,7 +27,7 @@ func TestLog(t *testing.T) {
 
 			c := Config{}
 			c.Segment.MaxStoreBytes = 32
-			log, err := NewLog(dir, c)
+			log, err := newLog(dir, c)
 			require.NoError(t, err)
 
 			fn(t, log)
@@ -51,7 +51,8 @@ func testAppendRead(t *testing.T, log *Log) {
 func testOutOfRangeErr(t *testing.T, log *Log) {
 	read, err := log.Read(1)
 	require.Nil(t, read)
-	require.Error(t, err)
+	apiErr := err.(api.ErrOffsetOutOfRange)
+	require.Equal(t, uint64(1), apiErr.Offset)
 }
 
 func testInitExisting(t *testing.T, o *Log) {
@@ -70,7 +71,7 @@ func testInitExisting(t *testing.T, o *Log) {
 	require.NoError(t, err)
 	require.Equal(t, uint64(2), off)
 
-	n, err := NewLog(o.Dir, o.Config)
+	n, err := newLog(o.Dir, o.Config)
 	require.NoError(t, err)
 
 	off, err = n.LowestOffset()
