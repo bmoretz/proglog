@@ -1,9 +1,15 @@
 CONFIG_PATH=${HOME}/.proglog
 
+$(CONFIG_PATH)/model.conf:
+	cp certs/model.conf $(CONFIG_PATH)/model.conf
+
+$(CONFIG_PATH)/policy.csv:
+	cp certs/policy.csv $(CONFIG_PATH)/policy.csv
+	
 .PHONY: init
 init:
 	mkdir -p ${CONFIG_PATH}
-
+		
 .PHONY: gencert
 gencert:
 	cfssl gencert \
@@ -21,12 +27,21 @@ gencert:
 			-ca-key=ca-key.pem \
 			-config=certs/ca-config.json \
 			-profile=client \
-			certs/client-csr.json | cfssljson -bare client
+			-cn="root" \
+			certs/client-csr.json | cfssljson -bare root-client
+
+	cfssl gencert \
+			-ca=ca.pem \
+			-ca-key=ca-key.pem \
+			-config=certs/ca-config.json \
+			-profile=client \
+			-cn="nobody" \
+			certs/client-csr.json | cfssljson -bare nobody-client
 
 	mv *.pem *.csr ${CONFIG_PATH}
 
 .PHONY: test
-test:
+test: $(CONFIG_PATH)/policy.csv $(CONFIG_PATH)/model.conf
 	go test -race ./...
 
 .PHONY: compile
