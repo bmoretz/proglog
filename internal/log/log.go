@@ -22,7 +22,7 @@ type Log struct {
 	segments      []*segment
 }
 
-func newLog(dir string, c Config) (*Log, error) {
+func NewLog(dir string, c Config) (*Log, error) {
 	if c.Segment.MaxStoreBytes == 0 {
 		c.Segment.MaxStoreBytes = 1024
 	}
