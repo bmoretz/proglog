@@ -22,5 +22,3 @@ require (
 )
 
 replace github.com/hashicorp/raft-boltdb => github.com/travisjeffery/raft-boltdb v1.0.0
-
-replace github.com/hashicorp/raft-boldb => github.com/travisjeffery/raft-boldtb v1.0.0
