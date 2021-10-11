@@ -6,8 +6,8 @@ import (
 	"testing"
 
 	api "github.com/bmoretz/proglog/api/v1"
+	"github.com/golang/protobuf/proto"
 	"github.com/stretchr/testify/require"
-	"google.golang.org/protobuf/proto"
 )
 
 func TestLog(t *testing.T) {
